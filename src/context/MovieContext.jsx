@@ -1,24 +1,43 @@
+
+import React, { createContext, useContext, useReducer } from "react";
+import { ACTION, API } from "../utils/consts";
 import axios from "axios";
-import React, { createContext, useContext } from "react";
-import { API } from "../utils/consts.js";
 
 const movieContext = createContext();
 export function useMovieContext() {
   return useContext(movieContext);
 }
 
-async function deleteMovie(id) {
+const MovieContext = ({ children }) => {
+
+const init = { movies: [] };
+function reducer(state, action) {
+  switch (action.type) {
+    case ACTION.movies:
+      return { ...state, movies: action.payload };
+    default:
+      return state;
+  }
+}
+const MovieContext = ({ children }) => {
+  const { state, dispatch } = useReducer(reducer, init);
+
+  async function deleteMovie(id) {
   try {
     await axios.delete(`${API}/${id}`);
   } catch (e) {
     console.log(e);
   }
 }
+  async function addMovie(obj) {
+    try {
+      await axios.post(API, obj);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+  const value = { addMovie, deleteMovie };
 
-const MovieContext = ({ children }) => {
-  const value = {
-    deleteMovie,
-  };
   return (
     <movieContext.Provider value={value}>{children}</movieContext.Provider>
   );
