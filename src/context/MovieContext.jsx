@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useReducer } from "react";
 import { ACTION, API } from "../utils/consts";
 import axios from "axios";
@@ -7,8 +6,6 @@ const movieContext = createContext();
 export function useMovieContext() {
   return useContext(movieContext);
 }
-
-const MovieContext = ({ children }) => {
 
 const init = { movies: [] };
 function reducer(state, action) {
@@ -23,12 +20,12 @@ const MovieContext = ({ children }) => {
   const { state, dispatch } = useReducer(reducer, init);
 
   async function deleteMovie(id) {
-  try {
-    await axios.delete(`${API}/${id}`);
-  } catch (e) {
-    console.log(e);
+    try {
+      await axios.delete(`${API}/${id}`);
+    } catch (e) {
+      console.log(e);
+    }
   }
-}
   async function addMovie(obj) {
     try {
       await axios.post(API, obj);
