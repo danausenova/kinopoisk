@@ -7,7 +7,7 @@ const Navbar = () => {
       <form className="search-form">
         <input type="text" placeholder="Поиск" className="search-input" />
         <button type="submit" className="search-button">
-          Найти
+          Найти film
         </button>
       </form>
     </nav>
