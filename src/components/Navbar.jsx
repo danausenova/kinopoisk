@@ -50,7 +50,7 @@ function Navbar() {
   };
 
   return (
-    <AppBar position="static" sx={{ background: "black" }}>
+    <AppBar position="static" sx={{ background: "#1b0735" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <VideoCameraBackIcon
@@ -67,14 +67,19 @@ function Navbar() {
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              color: "inherit",
+              color: "#ff7418",
               textDecoration: "none",
             }}
           >
-            LOGO
+            MOVIES
           </Typography>
 
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: "flex", md: "none", color: "#ff7418" },
+            }}
+          >
             <IconButton
               size="large"
               aria-label="account of current user"

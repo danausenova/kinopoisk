@@ -54,6 +54,7 @@ const MovieAddPage = () => {
             marginTop: 8,
             display: "flex",
             flexDirection: "column",
+            color: "#1b0735",
             alignItems: "center",
           }}
         >
@@ -75,6 +76,7 @@ const MovieAddPage = () => {
               autoFocus
               value={formValue.title}
               onChange={handleChange}
+              sx={{ color: "white", boxShadow: "1px 1px 7px #888888" }}
             />
             <TextField
               margin="normal"
@@ -84,6 +86,9 @@ const MovieAddPage = () => {
               label="Описание"
               value={formValue.description}
               onChange={handleChange}
+              sx={{
+                boxShadow: "1px 1px 7px #888888",
+              }}
             />
             <TextField
               margin="normal"
@@ -93,11 +98,14 @@ const MovieAddPage = () => {
               label="Постер"
               value={formValue.image}
               onChange={handleChange}
+              sx={{
+                boxShadow: "1px 1px 7px #888888",
+              }}
             />
             <FormControl fullWidth>
               <InputLabel>Категория</InputLabel>
               <Select
-                sx={{ mt: 2 }}
+                sx={{ mt: 2, boxShadow: "1px 1px 7px #888888" }}
                 label="Category"
                 name="category"
                 value={formValue.category}
@@ -120,7 +128,13 @@ const MovieAddPage = () => {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{
+                mt: 3,
+                mb: 2,
+                color: "",
+                backgroundColor: "#1b0735",
+                boxShadow: "1px 1px 12px #ff7418",
+              }}
             >
               Добавить
             </Button>

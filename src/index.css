@@ -58,4 +58,6 @@ code {
   background-color: #fc6a27;
 }
 
-/* //////////////////////////////// */
+a {
+  text-decoration: none;
+}
