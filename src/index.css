@@ -61,9 +61,11 @@ code {
   background-color: #fc6a27;
 }
 
-/* //////////////////////////////// */
+a {
+  text-decoration: none;
 
 .card:hover {
   box-shadow: 10px 10px 30px #bebebe, -10px -10px 60px #ffffff;
   transform: scale(1.05);
+
 }
