@@ -12,16 +12,29 @@ function reducer(state, action) {
   switch (action.type) {
     case ACTION.movies:
       return { ...state, movies: action.payload };
+
     default:
       return state;
   }
 }
 const MovieContext = ({ children }) => {
-  const { state, dispatch } = useReducer(reducer, init);
+  const [state, dispatch] = useReducer(reducer, init);
 
+  async function getMovies() {
+    try {
+      const { data } = await axios(API);
+      dispatch({
+        type: ACTION.movies,
+        payload: data,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
   async function deleteMovie(id) {
     try {
       await axios.delete(`${API}/${id}`);
+      getMovies();
     } catch (e) {
       console.log(e);
     }
@@ -33,7 +46,13 @@ const MovieContext = ({ children }) => {
       console.log(e);
     }
   }
-  const value = { addMovie, deleteMovie };
+
+  const value = {
+    movies: state.movies,
+    getMovies,
+    addMovie,
+    deleteMovie,
+  };
 
   return (
     <movieContext.Provider value={value}>{children}</movieContext.Provider>
