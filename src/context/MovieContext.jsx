@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer } from "react";
-import { ACTION, API } from "../utils/consts";
+import { API, ACTION } from "../utils/consts";
 import axios from "axios";
 
 const movieContext = createContext();
@@ -7,17 +7,43 @@ export function useMovieContext() {
   return useContext(movieContext);
 }
 
-const init = { movies: [] };
+const init = {
+  movies: [],
+  movie: null,
+};
+
 function reducer(state, action) {
   switch (action.type) {
     case ACTION.movies:
       return { ...state, movies: action.payload };
+    case ACTION.movie:
+      return { ...state, movie: action.payload };
     default:
       return state;
   }
 }
 const MovieContext = ({ children }) => {
   const { state, dispatch } = useReducer(reducer, init);
+
+  async function getOneMovie(id) {
+    try {
+      const { data } = await axios.get(`${API}/${id}`);
+      dispatch({
+        type: ACTION.movie,
+        payload: data,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async function editMovie(id, obj) {
+    try {
+      await axios.patch(`${API}/${id}`, obj);
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   async function deleteMovie(id) {
     try {
@@ -33,7 +59,13 @@ const MovieContext = ({ children }) => {
       console.log(e);
     }
   }
-  const value = { addMovie, deleteMovie };
+  const value = {
+    movie: state.movie,
+    addMovie,
+    deleteMovie,
+    getOneMovie,
+    editMovie,
+  };
 
   return (
     <movieContext.Provider value={value}>{children}</movieContext.Provider>
