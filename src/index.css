@@ -5,6 +5,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-image: url("https://wallpaper-mania.com/wp-content/uploads/2018/09/High_resolution_wallpaper_background_ID_77700445088.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 code {
@@ -60,4 +63,9 @@ code {
 
 a {
   text-decoration: none;
+
+.card:hover {
+  box-shadow: 10px 10px 30px #bebebe, -10px -10px 60px #ffffff;
+  transform: scale(1.05);
+
 }
