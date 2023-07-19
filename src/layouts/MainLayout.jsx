@@ -6,7 +6,6 @@ import MovieItem from "../components/MovieItem";
 const MainLayout = () => {
   return (
     <div>
-      <MovieItem />
       <Navbar />
       <Outlet />
     </div>
