@@ -37,7 +37,7 @@ export default function MovieItem({ item }) {
     setAnchorEl(null);
   };
   return (
-    <Card sx={{ maxWidth: 345, position: "relative" }}>
+    <Card className="card" sx={{ maxWidth: 345, position: "relative" }}>
       <CardActionArea>
         <CardMedia component="img" height="155" image={item.image} />
         <CardContent>
