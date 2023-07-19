@@ -12,17 +12,27 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
-import styled from "@emotion/styled";
-import { Search } from "@mui/icons-material";
-import { InputBase } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
+import TheaterComedyIcon from "@mui/icons-material/TheaterComedy";
+import { Link } from "react-router-dom";
+import VideoCameraBackIcon from "@mui/icons-material/VideoCameraBack";
+import { Switch } from "@mui/material";
+import { useMovieContext } from "../context/MovieContext";
 
-const pages = ["Главная", "AddFilm"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const pages = [
+  { title: "Главная", link: "/" },
+  {
+    title: "Добавить фильм",
+    link: "/add",
+  },
+];
+const settings = ["Logout"];
 
-function ResponsiveAppBar() {
+function Navbar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  const { sortByRating } = useMovieContext();
+  const [checked, setChecked] = React.useState(true);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -38,17 +48,13 @@ function ResponsiveAppBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-  // seaaaarch-------------------------
 
   return (
-    <AppBar position="static" sx={{ color: "#ff7418" }}>
+    <AppBar position="static" sx={{ background: "black" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon
-            sx={{
-              display: { xs: "none", md: "flex", color: "#ff7418" },
-              mr: 1,
-            }}
+          <VideoCameraBackIcon
+            sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
           />
           <Typography
             variant="h6"
@@ -57,14 +63,15 @@ function ResponsiveAppBar() {
             href="/"
             sx={{
               mr: 2,
-              display: { xs: "none", md: "flex", color: "#ff7418" },
+              display: { xs: "none", md: "flex" },
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
+              color: "inherit",
               textDecoration: "none",
             }}
           >
-            FILMS
+            LOGO
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -97,13 +104,17 @@ function ResponsiveAppBar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                <MenuItem key={page.title} onClick={handleCloseNavMenu}>
+                  <Link to={page.link}>
+                    <Typography textAlign="center">{page.title}</Typography>
+                  </Link>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+          <TheaterComedyIcon
+            sx={{ display: { xs: "flex", md: "none" }, mr: 1 }}
+          />
           <Typography
             variant="h5"
             noWrap
@@ -117,64 +128,51 @@ function ResponsiveAppBar() {
               fontWeight: 700,
               letterSpacing: ".3rem",
               color: "inherit",
-
               textDecoration: "none",
             }}
           >
-            LOGO
+            CINEMA
           </Typography>
-          <Box
-            sx={{
-              flexGrow: 1,
-              display: { xs: "none", md: "flex", color: "#ff7418" },
-            }}
-          >
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{
-                  my: 2,
-                  color: "#ff7418",
-                  display: "block",
-                  fontWeight: "700",
-                }}
-              >
-                {page}
-              </Button>
+              <Link to={page.link} key={page.title}>
+                <Button
+                  onClick={handleCloseNavMenu}
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
+                  {page.title}
+                </Button>
+              </Link>
             ))}
           </Box>
-
-          <Box sx={{ flexGrow: 0 }}>
-            {/* <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}> */}
-
-            {/* </IconButton> */}
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
+          <Box
+            sx={{
+              display: "flex",
+              flexWrap: "wrap",
+              alignItems: "center",
+              textAlign: "baseline",
+            }}
+          >
+            <Typography
+              variant="p"
+              noWrap
+              sx={{
+                color: "white",
               }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
+              Сортировка по рейтингу
+            </Typography>
+            <Switch
+              color="secondary"
+              onChange={() => {
+                setChecked(!checked);
+                sortByRating(checked);
+              }}
+            />
           </Box>
         </Toolbar>
       </Container>
     </AppBar>
   );
 }
-export default ResponsiveAppBar;
+export default Navbar;

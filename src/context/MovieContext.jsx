@@ -20,14 +20,12 @@ function reducer(state, action) {
     case ACTION.movie:
       return { ...state, movie: action.payload };
 
-
     default:
       return state;
   }
 }
 const MovieContext = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, init);
-
 
   async function getOneMovie(id) {
     try {
@@ -61,8 +59,6 @@ const MovieContext = ({ children }) => {
     }
   }
 
-
-
   async function deleteMovie(id) {
     try {
       await axios.delete(`${API}/${id}`);
@@ -78,16 +74,32 @@ const MovieContext = ({ children }) => {
       console.log(e);
     }
   }
+  async function sortByRating(checked) {
+    try {
+      if (checked === true) {
+        const { data } = await axios(API);
+        const res = data.sort((a, b) => b.rating - a.rating);
+        dispatch({
+          type: ACTION.movies,
+          payload: res,
+        });
+      } else {
+        getMovies();
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   const value = {
-     movies: state.movies,
+    movies: state.movies,
     movie: state.movie,
     addMovie,
     deleteMovie,
     getOneMovie,
     editMovie,
     getMovies,
-
+    sortByRating,
   };
 
   return (
