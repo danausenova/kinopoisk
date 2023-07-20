@@ -1,15 +1,11 @@
 import React, { useEffect } from "react";
 import MovieList from "../components/MovieList";
-
 import Filter from "../components/Filter";
 import { useMovieContext } from "../context/MovieContext";
 import { useSearchParams } from "react-router-dom";
 import { Box, Pagination } from "@mui/material";
-import { useMovieContext } from "../context/MovieContext";
-import { useSearchParams } from "react-router-dom";
+
 import { LIMIT } from "../utils/consts";
-
-
 
 const HomePage = () => {
   const { page, pageTotalCount, setPage, getMovies } = useMovieContext();
@@ -30,7 +26,7 @@ const HomePage = () => {
 
   return (
     <div>
-    <Filter />
+      <Filter />
       <MovieList />;
       <Box sx={{ maxWidth: "max-content", margin: "30px auto" }}>
         <Pagination
@@ -41,7 +37,6 @@ const HomePage = () => {
         />
       </Box>
       ;
-
     </div>
   );
 };
