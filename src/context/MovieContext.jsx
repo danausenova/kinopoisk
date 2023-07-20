@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useReducer } from "react";
 import { API, ACTION } from "../utils/consts";
 import axios from "axios";
+import { useSearchParams } from "react-router-dom";
 
 const movieContext = createContext();
 export function useMovieContext() {
@@ -26,6 +27,7 @@ function reducer(state, action) {
 }
 const MovieContext = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, init);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   async function getOneMovie(id) {
     try {
@@ -41,7 +43,7 @@ const MovieContext = ({ children }) => {
 
   async function getMovies() {
     try {
-      const { data } = await axios(API);
+      const { data } = await axios(`${API}${window.location.search}`);
       dispatch({
         type: ACTION.movies,
         payload: data,
@@ -94,6 +96,8 @@ const MovieContext = ({ children }) => {
   const value = {
     movies: state.movies,
     movie: state.movie,
+    searchParams,
+    setSearchParams,
     addMovie,
     deleteMovie,
     getOneMovie,
