@@ -3,17 +3,13 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import { useSearchParams } from "react-router-dom";
+import { useMovieContext } from "../context/MovieContext";
+import { LIMIT } from "../utils/consts";
 
 const filters = ["Все", "Драма", "Детектив", "Комедия"];
 
-// const buttons = [
-//   <Button >Все</Button>,
-//   <Button value="Драма">Драма</Button>,
-//   <Button value="Детектив">Детектив</Button>,
-//   <Button value="Комедия">Комедия</Button>,
-// ];
-
 export default function Filter() {
+  const { setPage } = useMovieContext();
   const [searchParams, setSearchParams] = useSearchParams();
   const [category, setCategory] = React.useState(
     searchParams.get("category") || "Все"
@@ -24,14 +20,19 @@ export default function Filter() {
   };
   React.useEffect(() => {
     const currentParams = Object.fromEntries([...searchParams]);
-
     if (category === "Все") {
-      setSearchParams();
+      const { _page, q } = currentParams;
+      setSearchParams({
+        _limit: LIMIT,
+        _page: _page || 1,
+        // q: q || "",
+      });
     } else {
       setSearchParams({
         ...currentParams,
         category,
       });
+      setPage(1);
     }
   }, [category]);
 

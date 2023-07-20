@@ -31,10 +31,7 @@ const MovieContext = ({ children }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [state, dispatch] = useReducer(reducer, init);
 
-  
-
   const [page, setPage] = useState(+searchParams.get("_page") || 1);
-
 
   async function getOneMovie(id) {
     try {
@@ -51,8 +48,6 @@ const MovieContext = ({ children }) => {
 
   async function getMovies() {
     try {
-
-
       const { data, headers } = await axios(`${API}${window.location.search}`);
       const totalCount = Math.ceil(headers["x-total-count"] / LIMIT);
 
