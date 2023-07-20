@@ -31,9 +31,6 @@ function reducer(state, action) {
 const MovieContext = ({ children }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [state, dispatch] = useReducer(reducer, init);
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [page, setPage] = useState(+searchParams.get("_page") || 1);
-
   const [page, setPage] = useState(+searchParams.get("_page") || 1);
 
   async function getOneMovie(id) {
@@ -125,7 +122,6 @@ const MovieContext = ({ children }) => {
     getMovies,
     sortByRating,
     setPage,
-
   };
 
   return (
