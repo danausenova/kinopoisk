@@ -1,6 +1,7 @@
-import React, { createContext, useContext, useReducer } from "react";
+import React, { createContext, useContext, useReducer, useState } from "react";
 import { API, ACTION } from "../utils/consts";
 import axios from "axios";
+import { useSearchParams } from "react-router-dom";
 
 const movieContext = createContext();
 export function useMovieContext() {
@@ -26,6 +27,8 @@ function reducer(state, action) {
 }
 const MovieContext = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, init);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [page, setPage] = useState(+searchParams.get("_page") || 1);
 
   async function getOneMovie(id) {
     try {
@@ -94,12 +97,15 @@ const MovieContext = ({ children }) => {
   const value = {
     movies: state.movies,
     movie: state.movie,
+    page,
     addMovie,
     deleteMovie,
     getOneMovie,
     editMovie,
     getMovies,
     sortByRating,
+    setPage,
+    setSearchParams,
   };
 
   return (
