@@ -1,8 +1,44 @@
-import React from "react";
+import React, { useEffect } from "react";
 import MovieList from "../components/MovieList";
+import Filter from "../components/Filter";
+import { useMovieContext } from "../context/MovieContext";
+import { useSearchParams } from "react-router-dom";
+import { Box, Pagination } from "@mui/material";
+
+import { LIMIT } from "../utils/consts";
 
 const HomePage = () => {
-  return <MovieList />;
+  const { page, pageTotalCount, setPage, getMovies } = useMovieContext();
+  const [searchParams, setSearchParams] = useSearchParams();
+  useEffect(() => {
+    getMovies();
+  }, [searchParams]);
+
+  useEffect(() => {
+    const currentParams = Object.fromEntries([...searchParams]);
+    setSearchParams({
+      ...currentParams,
+      _page: page,
+      _limit: LIMIT,
+    });
+    console.log(currentParams);
+  }, [page]);
+
+  return (
+    <div>
+      <Filter />
+      <MovieList />;
+      <Box sx={{ maxWidth: "max-content", margin: "30px auto" }}>
+        <Pagination
+          count={pageTotalCount}
+          page={page}
+          onChange={(_, val) => setPage(val)}
+          color="primary"
+        />
+      </Box>
+      ;
+    </div>
+  );
 };
 
 export default HomePage;

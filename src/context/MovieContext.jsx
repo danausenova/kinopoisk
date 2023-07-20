@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useReducer, useState } from "react";
-import { API, ACTION } from "../utils/consts";
+import { API, ACTION, LIMIT } from "../utils/consts";
+
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
 
@@ -11,6 +12,7 @@ export function useMovieContext() {
 const init = {
   movies: [],
   movie: null,
+  pageTotalCount: 1,
 };
 
 function reducer(state, action) {
@@ -20,19 +22,24 @@ function reducer(state, action) {
 
     case ACTION.movie:
       return { ...state, movie: action.payload };
-
+    case ACTION.pageTotalCount:
+      return { ...state, pageTotalCount: action.payload };
     default:
       return state;
   }
 }
 const MovieContext = ({ children }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [state, dispatch] = useReducer(reducer, init);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [page, setPage] = useState(+searchParams.get("_page") || 1);
+
   const [page, setPage] = useState(+searchParams.get("_page") || 1);
 
   async function getOneMovie(id) {
     try {
       const { data } = await axios.get(`${API}/${id}`);
+
       dispatch({
         type: ACTION.movie,
         payload: data,
@@ -44,7 +51,14 @@ const MovieContext = ({ children }) => {
 
   async function getMovies() {
     try {
-      const { data } = await axios(API);
+      const { data, headers } = await axios(`${API}${window.location.search}`);
+      const totalCount = Math.ceil(headers["x-total-count"] / LIMIT);
+
+      dispatch({
+        type: "pageTotalCount",
+        payload: totalCount,
+      });
+
       dispatch({
         type: ACTION.movies,
         payload: data,
@@ -97,7 +111,13 @@ const MovieContext = ({ children }) => {
   const value = {
     movies: state.movies,
     movie: state.movie,
+
+    searchParams,
+    setSearchParams,
+
+    pageTotalCount: state.pageTotalCount,
     page,
+
     addMovie,
     deleteMovie,
     getOneMovie,
@@ -105,7 +125,7 @@ const MovieContext = ({ children }) => {
     getMovies,
     sortByRating,
     setPage,
-    setSearchParams,
+
   };
 
   return (
