@@ -17,6 +17,7 @@ import { Link } from "react-router-dom";
 import VideoCameraBackIcon from "@mui/icons-material/VideoCameraBack";
 import { Switch } from "@mui/material";
 import { useMovieContext } from "../context/MovieContext";
+import LiveSearch from "./LiveSearch";
 
 const pages = [
   { title: "Главная", link: "/" },
@@ -150,6 +151,9 @@ function Navbar() {
               </Link>
             ))}
           </Box>
+
+          <LiveSearch />
+
           <Box
             sx={{
               display: "flex",

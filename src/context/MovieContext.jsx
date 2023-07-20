@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useReducer, useState } from "react";
 import { API, ACTION, LIMIT } from "../utils/consts";
+
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
 
@@ -30,6 +31,8 @@ function reducer(state, action) {
 const MovieContext = ({ children }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [state, dispatch] = useReducer(reducer, init);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [page, setPage] = useState(+searchParams.get("_page") || 1);
 
   const [page, setPage] = useState(+searchParams.get("_page") || 1);
 
@@ -122,6 +125,7 @@ const MovieContext = ({ children }) => {
     getMovies,
     sortByRating,
     setPage,
+
   };
 
   return (
